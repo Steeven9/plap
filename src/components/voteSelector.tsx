@@ -1,16 +1,38 @@
 "use client";
 
+import { socket } from "@/socket";
+import { Vote } from "@/utils/game";
 import { sizes } from "@/utils/sizes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./button";
 
-export default function VoteSelector() {
-  const [selectedSize, setselectedSize] = useState("");
+interface Props {
+  name: string;
+}
+
+export default function VoteSelector({ name }: Props) {
+  const [selectedSize, setSelectedSize] = useState("");
 
   function selectSize(size: string) {
-    setselectedSize(size);
-    //TODO send to socket
+    setSelectedSize(size);
+
+    const data: Vote = {
+      vote: size,
+      name: name,
+    };
+    socket.emit("submitVote", data);
   }
+
+  useEffect(() => {
+    socket.on("newStory", () => {
+      console.info("Reset size");
+      setSelectedSize("");
+    });
+
+    return () => {
+      socket.off("newStory");
+    };
+  }, []);
 
   return sizes.map((size) => (
     <Button
