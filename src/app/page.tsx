@@ -106,7 +106,12 @@ export default function Home() {
       <div className="m-4">
         <div>Resources</div>
         {Object.entries(resourcesLinks).map(([name, url]) => (
-          <Link key={name} className="block ml-1" href={url as string}>
+          <Link
+            key={name}
+            className="block ml-1"
+            href={url as string}
+            target="_blank"
+          >
             {name}
           </Link>
         ))}
