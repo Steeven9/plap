@@ -8,9 +8,10 @@ import Button from "./button";
 
 interface Props {
   name: string;
+  enabled: boolean;
 }
 
-export default function VoteSelector({ name }: Props) {
+export default function VoteSelector({ name, enabled }: Props) {
   const [selectedSize, setSelectedSize] = useState("");
 
   function selectSize(size: string) {
@@ -38,6 +39,7 @@ export default function VoteSelector({ name }: Props) {
     <Button
       label={size.tshirt}
       key={size.tshirt}
+      disabled={!enabled}
       className={`m-2 ${selectedSize === size.tshirt ? "bg-blue-600!" : ""}`}
       onClick={() => selectSize(size.tshirt)}
     />
