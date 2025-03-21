@@ -22,7 +22,9 @@ export default function Button({
   return (
     <button
       className={`${
-        disabled ? "disabled" : "bg-blue-900 hover:bg-blue-800 cursor-pointer"
+        disabled
+          ? "bg-gray-600"
+          : "bg-blue-900 hover:bg-blue-800 cursor-pointer"
       } font-bold py-[10px] px-4 rounded inline-flex align-middle space-x-3 mr-2 my-2 ${
         className ?? ""
       }`}
