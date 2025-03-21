@@ -15,7 +15,7 @@ app.prepare().then(() => {
   const io = new Server(httpServer);
 
   let currentGameData = {
-    storyName: process.env.NEXT_DEFAULT_ISSUE_KEY ?? "",
+    storyName: process.env.NEXT_PUBLIC_DEFAULT_ISSUE_KEY ?? "",
     votes: [],
     connectedPlayers: 0,
   };
