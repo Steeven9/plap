@@ -8,9 +8,14 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [name, setName] = useState("");
-  const [storyName, setStoryName] = useState("");
+  const [storyName, setStoryName] = useState(
+    process.env.NEXT_PUBLIC_DEFAULT_ISSUE_KEY ?? ""
+  );
   const [playersCount, setPlayersCount] = useState(0);
   const [results, setResults] = useState([]);
+  const resourcesLinks = JSON.parse(
+    process.env.NEXT_PUBLIC_RESOURCES_LINKS ?? "{}"
+  );
 
   useEffect(() => {
     socket.on("newStory", (data) => {
@@ -55,6 +60,7 @@ export default function Home() {
         <input
           type="text"
           value={storyName}
+          placeholder={process.env.NEXT_PUBLIC_DEFAULT_ISSUE_KEY}
           onChange={(e) => setStoryName(e.target.value)}
           onBlur={() => socket.emit("updateStory", storyName)}
           className="bg-white text-black"
@@ -81,15 +87,11 @@ export default function Home() {
 
       <div className="m-4">
         <div>Resources</div>
-        {
-          //TODO grab from env vars
-        }
-        <Link className="block ml-1" href="">
-          Reference stories
-        </Link>
-        <Link className="block ml-1" href="">
-          Jira board
-        </Link>
+        {Object.entries(resourcesLinks).map(([name, url]) => (
+          <Link key={name} className="block ml-1" href={url as string}>
+            {name}
+          </Link>
+        ))}
       </div>
     </>
   );
