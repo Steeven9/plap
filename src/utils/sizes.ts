@@ -9,5 +9,6 @@ export const sizes: Size[] = [
   { tshirt: "M", storyPoints: 3 },
   { tshirt: "L", storyPoints: 5 },
   { tshirt: "XL", storyPoints: 8 },
+  { tshirt: "XXL", storyPoints: 13 },
   { tshirt: "💣", storyPoints: 99 },
 ];
