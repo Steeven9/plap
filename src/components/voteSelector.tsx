@@ -11,7 +11,7 @@ interface Props {
   enabled: boolean;
 }
 
-export default function VoteSelector({ name, enabled }: Props) {
+export default function VoteSelector({ name, enabled }: Readonly<Props>) {
   const [selectedSize, setSelectedSize] = useState("");
 
   function selectSize(size: string) {

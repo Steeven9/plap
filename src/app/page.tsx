@@ -36,7 +36,7 @@ export default function Home() {
     });
 
     socket.on("updatePlayers", (data) => {
-      console.info("New players joined", data);
+      console.info("New player joined", data);
       setPlayersCount(data);
     });
 
@@ -89,26 +89,31 @@ export default function Home() {
 
       <div className="m-4">
         <div>Your vote</div>
-        <VoteSelector name={name} enabled={results.length == 0} />
+        <VoteSelector
+          name={name}
+          enabled={results.length == 0 && name.length > 0}
+        />
       </div>
 
       {results.length > 0 ? (
         <div className="m-4 p-2 border border-amber-600">
-          <div>Results</div>
-          {results.map((result: Vote) => (
-            <div key={result.name}>
-              {result.name} voted {result.vote}
-            </div>
-          ))}
+          <div className="text-xl mb-2">Results</div>
+          {results
+            .toSorted((a, b) => a.name.localeCompare(b.name))
+            .map((result: Vote) => (
+              <div key={result.name}>
+                {result.name} voted {result.vote}
+              </div>
+            ))}
         </div>
       ) : null}
 
       <div className="m-4">
-        <div>Resources</div>
+        <div className="text-xl mb-2">Resources</div>
         {Object.entries(resourcesLinks).map(([name, url]) => (
           <Link
             key={name}
-            className="block ml-1"
+            className="block ml-2"
             href={url as string}
             target="_blank"
           >
