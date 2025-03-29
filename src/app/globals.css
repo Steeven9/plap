@@ -10,3 +10,7 @@ body {
   background: var(--background);
   color: var(--foreground);
 }
+
+.textfield {
+  @apply p-1 rounded bg-white text-black;
+}

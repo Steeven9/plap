@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/button";
 import VoteSelector from "@/components/voteSelector";
 import { socket } from "@/socket";
 import { Vote } from "@/utils/game";
@@ -68,20 +69,23 @@ export default function Home() {
             localStorage.setItem("plap_name", e.target.value);
           }}
           placeholder="Best developer ever"
-          className="bg-white text-black"
+          className="textfield"
         />
       </div>
 
       <div className="m-4">
-        Story
+        Issue key
         <br />
         <input
           type="text"
           value={storyName}
           placeholder={process.env.NEXT_PUBLIC_DEFAULT_ISSUE_KEY}
           onChange={(e) => setStoryName(e.target.value)}
-          onBlur={() => socket.emit("updateStory", storyName)}
-          className="bg-white text-black"
+          className="textfield mr-2"
+        />
+        <Button
+          label="Update"
+          onClick={() => socket.emit("updateStory", storyName)}
         />
       </div>
 
