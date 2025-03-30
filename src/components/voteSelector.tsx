@@ -1,8 +1,8 @@
 "use client";
 
-import { socket } from "@/socket";
 import { Vote } from "@/utils/game";
 import { sizes } from "@/utils/sizes";
+import { socket } from "@/utils/socket";
 import { useEffect, useState } from "react";
 import Button from "./button";
 

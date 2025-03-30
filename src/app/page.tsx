@@ -2,8 +2,8 @@
 
 import Button from "@/components/button";
 import VoteSelector from "@/components/voteSelector";
-import { socket } from "@/socket";
 import { Vote } from "@/utils/game";
+import { socket } from "@/utils/socket";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Confetti from "react-confetti";
