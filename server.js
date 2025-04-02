@@ -16,7 +16,7 @@ app.prepare().then(() => {
 
   let currentGameData = {
     storyName: process.env.NEXT_PUBLIC_DEFAULT_ISSUE_KEY ?? "",
-    votes: [],
+    votes: new Map(), //<string, string>
     connectedPlayers: 0,
   };
 
@@ -30,17 +30,26 @@ app.prepare().then(() => {
       // input is string, name of the new story
       console.info(`Received story update`, data);
       currentGameData.storyName = data;
-      currentGameData.votes = [];
+      currentGameData.votes = new Map();
       io.emit("newStory", data);
     });
 
     socket.on("submitVote", (data) => {
       // input is a Vote object
       console.info(`Received vote update`, data);
-      currentGameData.votes = [...currentGameData.votes, data];
-      if (currentGameData.votes.length === currentGameData.connectedPlayers) {
-        console.info(`Full votes (${currentGameData.connectedPlayers})`);
-        io.emit("revealVotes", currentGameData.votes);
+      currentGameData.votes.set(data.name, data.vote);
+
+      if (currentGameData.votes.size === currentGameData.connectedPlayers) {
+        console.info(`Full votes (${currentGameData.votes.size})`);
+
+        const filteredVotes = Array.from(currentGameData.votes.entries())
+          .map(([name, vote]) => ({
+            name,
+            vote,
+          }))
+          .filter((vote) => vote.vote != "None");
+
+        io.emit("revealVotes", filteredVotes);
       }
     });
 

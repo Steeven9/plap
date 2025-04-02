@@ -1,6 +1,6 @@
 export interface GameData {
   storyName: string;
-  votes: Vote[];
+  votes: Map<string, string>;
   connectedPlayers: number;
 }
 

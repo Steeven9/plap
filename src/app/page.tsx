@@ -21,7 +21,7 @@ export default function Home() {
   const [isExploding, setIsExploding] = useState(false);
 
   useEffect(() => {
-    socket.on("newStory", (data) => {
+    socket.on("newStory", (data: string) => {
       console.info("Update story name");
       setStoryName(data);
       setResults([]);
@@ -36,7 +36,7 @@ export default function Home() {
       }
     });
 
-    socket.on("updatePlayers", (data) => {
+    socket.on("updatePlayers", (data: number) => {
       console.info("New player joined", data);
       setPlayersCount(data);
     });
