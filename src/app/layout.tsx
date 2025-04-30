@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
+import favicon from "./favicon.ico";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -30,9 +31,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header className="p-2">plap - Easy planning poker</header>
+        <header className="p-4 flex items-center">
+          <Image src={favicon} alt="Logo" height={45} />
+          <div>
+            <p className="ml-4 text-bold text-3xl">plap</p>
+            <p className="ml-4">Easy planning poker</p>
+          </div>
+        </header>
 
-        <main>{children}</main>
+        <main className="p-4">{children}</main>
 
         <footer className="flex space-x-2 p-4 items-center justify-center">
           <p>
