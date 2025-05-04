@@ -36,7 +36,10 @@ app.prepare().then(() => {
 
     socket.on("submitVote", (data) => {
       // input is a Vote object
-      console.info(`Received vote update`, data);
+      console.info(
+        `Received vote update from ${data.name}:`,
+        currentGameData.votes
+      );
       currentGameData.votes.set(data.name, data.vote);
 
       if (currentGameData.votes.size === currentGameData.connectedPlayers) {
@@ -51,6 +54,11 @@ app.prepare().then(() => {
 
         io.emit("revealVotes", filteredVotes);
       }
+    });
+
+    socket.on("reload", () => {
+      console.info(`Force reload`, socket.id);
+      io.emit("reload");
     });
 
     socket.on("disconnect", () => {

@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/button";
 import Textfield from "@/components/textfield";
 import VoteSelector from "@/components/voteSelector";
 import { Vote } from "@/utils/game";
@@ -11,6 +12,8 @@ import Confetti from "react-confetti";
 
 export default function Home() {
   const defaultIssueKey = process.env.NEXT_PUBLIC_DEFAULT_ISSUE_KEY ?? "ABC-";
+  const defaultAdminName =
+    process.env.NEXT_PUBLIC_DEFAULT_ADMIN_NAME ?? "admin";
   // textfields
   const [name, setName] = useState("");
   const [storyName, setStoryName] = useState(defaultIssueKey);
@@ -43,6 +46,10 @@ export default function Home() {
     socket.on("updatePlayers", (data: number) => {
       console.info("New player joined", data);
       setPlayersCount(data);
+    });
+
+    socket.on("reload", () => {
+      location.reload();
     });
 
     setName(localStorage.getItem("plap_name") ?? "");
@@ -124,6 +131,17 @@ export default function Home() {
           </Link>
         ))}
       </div>
+
+      {name === defaultAdminName ? (
+        <div className="mt-6">
+          <div className="text-xl mb-2">Admin controls</div>
+          <Button
+            label={"Reload"}
+            className={`m-2`}
+            onClick={() => socket.emit("reload")}
+          />
+        </div>
+      ) : null}
     </>
   );
 }
