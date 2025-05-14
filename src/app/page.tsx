@@ -5,7 +5,6 @@ import Textfield from "@/components/textfield";
 import VoteSelector from "@/components/voteSelector";
 import { Vote } from "@/utils/game";
 import { socket } from "@/utils/socket";
-import useDebounce from "@/utils/useDebounce";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Confetti from "react-confetti";
@@ -17,7 +16,6 @@ export default function Home() {
   // textfields
   const [name, setName] = useState("");
   const [storyName, setStoryName] = useState(defaultIssueKey);
-  const debouncedStoryName = useDebounce(storyName, 500);
   // results and data
   const [playersCount, setPlayersCount] = useState(0);
   const [results, setResults] = useState<Vote[]>([]);
@@ -59,13 +57,6 @@ export default function Home() {
     };
   }, []);
 
-  useEffect(() => {
-    if (debouncedStoryName != defaultIssueKey) {
-      socket.emit("updateStory", debouncedStoryName);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedStoryName]);
-
   return (
     <>
       {isExploding ? (
@@ -92,6 +83,7 @@ export default function Home() {
         placeholder={process.env.NEXT_PUBLIC_DEFAULT_ISSUE_KEY}
         value={storyName}
         onChange={(e) => setStoryName(e.target.value)}
+        onBlur={(e) => socket.emit("updateStory", e.target.value)}
         required
       />
 
@@ -136,9 +128,14 @@ export default function Home() {
         <div className="mt-6">
           <div className="text-xl mb-2">Admin controls</div>
           <Button
-            label={"Reload"}
+            label={"♻️ Reload"}
             className={`m-2`}
             onClick={() => socket.emit("reload")}
+          />
+          <Button
+            label={"👀 Reveal"}
+            className={`m-2`}
+            onClick={() => socket.emit("reveal")}
           />
         </div>
       ) : null}

@@ -5,6 +5,7 @@ interface Props {
   placeholder?: string;
   value?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: ChangeEvent<HTMLInputElement>) => void;
   type?: string;
   required?: boolean;
 }
@@ -14,6 +15,7 @@ export default function Textfield({
   placeholder,
   value,
   onChange,
+  onBlur,
   type = "text",
   required = false,
 }: Readonly<Props>) {
@@ -26,6 +28,7 @@ export default function Textfield({
         type={type}
         value={value}
         onChange={onChange}
+        onBlur={onBlur}
         placeholder={placeholder}
         required={required}
       />

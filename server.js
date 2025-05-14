@@ -10,6 +10,15 @@ const port = 3000;
 const app = next({ dev, hostname, port, turbopack: true });
 const handler = app.getRequestHandler();
 
+const filterVotes = (votes) => {
+  return Array.from(votes.entries())
+    .map(([name, vote]) => ({
+      name,
+      vote,
+    }))
+    .filter((vote) => vote.vote != "None");
+};
+
 app.prepare().then(() => {
   const httpServer = createServer(handler);
   const io = new Server(httpServer);
@@ -37,7 +46,7 @@ app.prepare().then(() => {
     socket.on("submitVote", (data) => {
       // input is a Vote object
       console.info(
-        `Received vote update from ${data.name}:`,
+        `Received vote update from ${data.name}: ${data.vote}`,
         currentGameData.votes
       );
       currentGameData.votes.set(data.name, data.vote);
@@ -45,20 +54,18 @@ app.prepare().then(() => {
       if (currentGameData.votes.size === currentGameData.connectedPlayers) {
         console.info(`Full votes (${currentGameData.votes.size})`);
 
-        const filteredVotes = Array.from(currentGameData.votes.entries())
-          .map(([name, vote]) => ({
-            name,
-            vote,
-          }))
-          .filter((vote) => vote.vote != "None");
-
-        io.emit("revealVotes", filteredVotes);
+        io.emit("revealVotes", filterVotes(currentGameData.votes));
       }
     });
 
     socket.on("reload", () => {
       console.info(`Force reload`, socket.id);
       io.emit("reload");
+    });
+
+    socket.on("reveal", () => {
+      console.info(`Force reveal`, socket.id);
+      io.emit("revealVotes", filterVotes(currentGameData.votes));
     });
 
     socket.on("disconnect", () => {
