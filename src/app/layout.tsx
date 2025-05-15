@@ -41,7 +41,7 @@ export default function RootLayout({
 
         <main className="p-4">{children}</main>
 
-        <footer className="flex space-x-2 p-4 items-center justify-center">
+        <footer className="flex space-x-2 p-4 items-center fixed bottom-0 right-0">
           <p>
             &copy;{new Date().getFullYear()}{" "}
             <Link

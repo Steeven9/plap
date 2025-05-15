@@ -162,11 +162,13 @@ export default function Home() {
       <div className="mt-6">Connected players: {playersCount}</div>
 
       <div className="mt-6">
-        <div className="text-xl mb-2">Useful links</div>
+        <div className="text-xl mb-2">
+          Useful links to click directly instead of searching in Wiki
+        </div>
         {Object.entries(resourcesLinks).map(([name, url]) => (
           <Link
             key={name}
-            className="block ml-2 mb-2"
+            className="block ml-2 mb-2 w-fit"
             href={url as string}
             target="_blank"
           >
