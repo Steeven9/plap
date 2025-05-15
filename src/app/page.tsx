@@ -10,9 +10,14 @@ import { useEffect, useState } from "react";
 import Confetti from "react-confetti";
 
 export default function Home() {
+  // setup
   const defaultIssueKey = process.env.NEXT_PUBLIC_DEFAULT_ISSUE_KEY ?? "ABC-";
   const defaultAdminName =
     process.env.NEXT_PUBLIC_DEFAULT_ADMIN_NAME ?? "admin";
+  const resourcesLinks = JSON.parse(
+    process.env.NEXT_PUBLIC_RESOURCES_LINKS ?? "{}"
+  );
+  const [showHelp, setShowHelp] = useState(false);
   // textfields
   const [name, setName] = useState("");
   const [storyName, setStoryName] = useState(defaultIssueKey);
@@ -21,11 +26,16 @@ export default function Home() {
   const [results, setResults] = useState<Vote[]>([]);
   const [isExploding, setIsExploding] = useState(false);
 
-  const resourcesLinks = JSON.parse(
-    process.env.NEXT_PUBLIC_RESOURCES_LINKS ?? "{}"
-  );
-
   useEffect(() => {
+    // first load: show help message
+    if (localStorage.getItem("plap_hide_help") != "true") {
+      setShowHelp(true);
+    }
+
+    // read name from localstorage, if any
+    setName(localStorage.getItem("plap_name") ?? "");
+
+    // set up socket events
     socket.on("newStory", (data: string) => {
       console.info("Update story name");
       setStoryName(data);
@@ -50,12 +60,53 @@ export default function Home() {
       location.reload();
     });
 
-    setName(localStorage.getItem("plap_name") ?? "");
-
     return () => {
       socket.off("newStory");
     };
   }, []);
+
+  if (showHelp) {
+    return (
+      <>
+        <div className="text-2xl mb-2">How2plap</div>
+        <p>Fill in your name first - can&apos;t vote without that!</p>
+
+        <div className="text-xl mb-2 mt-4">As a dealer (PO/SM)</div>
+        <p>
+          Enter the issue key and press on <i>None</i> to skip voting. The issue
+          will be updated for everyone only after you click on the vote button.
+          <br />
+          When everyone has voted, the results will be displayed automatically.
+          If for some reason they don&apos;t, use the <i>Reveal</i> button at
+          the bottom of the page.
+        </p>
+
+        <div className="text-xl mb-2 mt-4">As a player (engineer)</div>
+        <p>
+          Wait for the correct issue key to appear and cast your vote -
+          don&apos;t worry, you can change it until the results are revealed.
+          <br />
+          Please don&apos;t try to change the issue key, as that will reset the
+          votes of everyone. Let the dealer deal with that 🥁
+        </p>
+
+        <p className="mt-2">
+          The app is designed to work without refreshing the page. If you
+          don&apos;t see anything move, just wait - the dealer is probably still
+          switching tabs 🙃
+        </p>
+
+        <Button
+          label="🚀 Let's go!"
+          className="mt-4"
+          onClick={() => {
+            localStorage.setItem("plap_hide_help", "true");
+            setShowHelp(false);
+          }}
+        />
+      </>
+    );
+  }
 
   return (
     <>
@@ -111,7 +162,7 @@ export default function Home() {
       <div className="mt-6">Connected players: {playersCount}</div>
 
       <div className="mt-6">
-        <div className="text-xl mb-2">Resources</div>
+        <div className="text-xl mb-2">Useful links</div>
         {Object.entries(resourcesLinks).map(([name, url]) => (
           <Link
             key={name}
@@ -124,6 +175,7 @@ export default function Home() {
         ))}
       </div>
 
+      {/* TODO better auth lmao */}
       {name === defaultAdminName ? (
         <div className="mt-6">
           <div className="text-xl mb-2">Admin controls</div>

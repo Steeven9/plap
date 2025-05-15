@@ -51,6 +51,9 @@ The first load might take a while, so be patient!
 The application can be easily deployed with Docker. Example manifests are provided
 in the `deployment` folder - just make sure to adjust the environment variables.
 
+Please note that rooms or multiple parallel matches are not supported, so make sure
+you don't use the same instance with another team at the same time :)
+
 ⚠️ NOTE: the Docker container currently runs in development mode. This can expose
 sensitive data in the browser console and lead to other shenanigans.
 
