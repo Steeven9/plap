@@ -1,0 +1,16 @@
+# example Docker-compose deployment file
+services:
+  plap:
+    image: steeven9/plap:latest
+    container_name: plap
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      NEXT_PUBLIC_DEFAULT_ISSUE_KEY: ABC-
+      # etc.
+      # see .env.example file
+
+networks:
+  default:
+    name: plap

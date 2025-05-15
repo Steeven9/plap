@@ -1,0 +1,17 @@
+# example CloudFoundry manifest file
+# see https://docs.cloudfoundry.org/devguide/deploy-apps/push-docker.html
+---
+version: 1
+applications:
+  - name: plap
+    memory: 256M
+    disk_quota: 1G
+    instances: 1
+    docker:
+      image: steeven9/plap:latest
+    routes:
+      - route: plap.site.something
+    env:
+      NEXT_PUBLIC_DEFAULT_ISSUE_KEY: ABC-
+      # etc. 
+      # see .env.example file

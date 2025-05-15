@@ -3,5 +3,7 @@
 .husky/
 .next/
 node_modules/
+deployment/
+resources/
 .env*
 Dockerfile
