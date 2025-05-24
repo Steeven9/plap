@@ -16,7 +16,8 @@ const filterVotes = (votes) => {
       name,
       vote,
     }))
-    .filter((vote) => vote.vote != "None");
+    .filter((vote) => vote.vote != "None")
+    .sort((a, b) => a.vote.localeCompare(b.vote));
 };
 
 app.prepare().then(() => {
