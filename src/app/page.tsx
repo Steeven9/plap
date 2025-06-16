@@ -86,19 +86,19 @@ export default function Home() {
           Wait for the correct issue key to appear and cast your vote -
           don&apos;t worry, you can change it until the results are revealed.
           <br />
-          Please don&apos;t try to change the issue key, as that will reset the
-          votes of everyone. Let the dealer deal with that 🥁
+          Please <b>don&apos;t</b> try to change the issue key, as that will
+          reset the votes of everyone. Let the dealer deal with that 🥁
         </p>
 
         <p className="mt-2">
           The app is designed to work without refreshing the page. If you
-          don&apos;t see anything move, just wait - the dealer is probably still
-          switching tabs 🙃
+          don&apos;t see anything move, just <b>wait</b> - the dealer is
+          probably still switching tabs 🙃
         </p>
 
         <Button
           label="🚀 Let's go!"
-          className="mt-4"
+          className="mt-6"
           onClick={() => {
             localStorage.setItem("plap_hide_help", "true");
             setShowHelp(false);
@@ -162,9 +162,7 @@ export default function Home() {
       <div className="mt-6">Connected players: {playersCount}</div>
 
       <div className="mt-6">
-        <div className="text-xl mb-2">
-          Useful links to click directly instead of searching in Wiki
-        </div>
+        <div className="text-xl mb-4">Useful links</div>
         {Object.entries(resourcesLinks).map(([name, url]) => (
           <Link
             key={name}
@@ -177,10 +175,21 @@ export default function Home() {
         ))}
       </div>
 
-      {/* TODO better auth lmao */}
-      {name === defaultAdminName ? (
+      <Button
+        label={"🆘 Help"}
+        className={`m-2 mt-6`}
+        onClick={() => setShowHelp(true)}
+      />
+
+      {/* default admin name is a comma-separated string (env var) */}
+      {defaultAdminName.includes(name) ? (
         <div className="mt-6">
           <div className="text-xl mb-2">Admin controls</div>
+          <Button
+            label={"🗑️ Clear"}
+            className={`m-2`}
+            onClick={() => socket.emit("updateStory", "")}
+          />
           <Button
             label={"♻️ Reload"}
             className={`m-2`}
