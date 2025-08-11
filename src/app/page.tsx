@@ -71,16 +71,6 @@ export default function Home() {
         <div className="text-2xl mb-2">How2plap</div>
         <p>Fill in your name first - can&apos;t vote without that!</p>
 
-        <div className="text-xl mb-2 mt-4">As a dealer (PO/SM)</div>
-        <p>
-          Enter the issue key and press on <i>None</i> to skip voting. The issue
-          will be updated for everyone only after you click on the vote button.
-          <br />
-          When everyone has voted, the results will be displayed automatically.
-          If for some reason they don&apos;t, use the <i>Reveal</i> button at
-          the bottom of the page.
-        </p>
-
         <div className="text-xl mb-2 mt-4">As a player (engineer)</div>
         <p>
           Wait for the correct issue key to appear and cast your vote -
@@ -88,6 +78,17 @@ export default function Home() {
           <br />
           Please <b>don&apos;t</b> try to change the issue key, as that will
           reset the votes of everyone. Let the dealer deal with that 🥁
+        </p>
+
+        <div className="text-xl mb-2 mt-4">As a dealer (PO/SM)</div>
+        <p>
+          Enter the issue key and press on the <i>None</i> button to skip
+          voting. The issue will be updated for everyone only <b>after</b> you
+          click on the vote button.
+          <br />
+          When everyone has voted, the results will be displayed automatically.
+          If for some reason they don&apos;t, use the <i>Reveal</i> button at
+          the bottom of the page.
         </p>
 
         <p className="mt-2">
@@ -176,28 +177,32 @@ export default function Home() {
       </div>
 
       <Button
-        label={"🆘 Help"}
-        className={`m-2 mt-6`}
+        label="🆘 Tutorial"
+        className="m-2 mt-6"
+        tooltip="Show some useful instructions to get started"
         onClick={() => setShowHelp(true)}
       />
 
       {/* default admin name is a comma-separated string (env var) */}
-      {defaultAdminName.includes(name) ? (
+      {defaultAdminName.toLowerCase().includes(name.toLowerCase()) ? (
         <div className="mt-6">
           <div className="text-xl mb-2">Admin controls</div>
           <Button
-            label={"🗑️ Clear"}
-            className={`m-2`}
+            label="🗑️ Clear"
+            className="m-2"
+            tooltip="Resets all votes and the issue key"
             onClick={() => socket.emit("updateStory", "")}
           />
           <Button
-            label={"♻️ Reload"}
-            className={`m-2`}
+            label="♻️ Reload"
+            className="m-2"
+            tooltip="Reload the page for everyone (use if everything is broken)"
             onClick={() => socket.emit("reload")}
           />
           <Button
-            label={"👀 Reveal"}
-            className={`m-2`}
+            label="👀 Reveal"
+            className="m-2"
+            tooltip="Force reveal the votes (use if they aren't showing)"
             onClick={() => socket.emit("reveal")}
           />
         </div>
