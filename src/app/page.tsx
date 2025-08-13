@@ -12,8 +12,9 @@ import Confetti from "react-confetti";
 export default function Home() {
   // setup
   const defaultIssueKey = process.env.NEXT_PUBLIC_DEFAULT_ISSUE_KEY ?? "ABC-";
-  const defaultAdminName =
-    process.env.NEXT_PUBLIC_DEFAULT_ADMIN_NAME ?? "admin";
+  const defaultAdminNames = (
+    process.env.NEXT_PUBLIC_DEFAULT_ADMIN_NAME ?? "admin"
+  ).split(", ");
   const resourcesLinks = JSON.parse(
     process.env.NEXT_PUBLIC_RESOURCES_LINKS ?? "{}"
   );
@@ -25,6 +26,8 @@ export default function Home() {
   const [playersCount, setPlayersCount] = useState(0);
   const [results, setResults] = useState<Vote[]>([]);
   const [isExploding, setIsExploding] = useState(false);
+  const isAdmin =
+    name.length > 0 && defaultAdminNames.includes(name.toLowerCase());
 
   useEffect(() => {
     // first load: show help message
@@ -183,8 +186,7 @@ export default function Home() {
         onClick={() => setShowHelp(true)}
       />
 
-      {/* default admin name is a comma-separated string (env var) */}
-      {defaultAdminName.toLowerCase().includes(name.toLowerCase()) ? (
+      {isAdmin ? (
         <div className="mt-6">
           <div className="text-xl mb-2">Admin controls</div>
           <Button
