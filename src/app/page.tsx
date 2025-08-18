@@ -31,7 +31,7 @@ export default function Home() {
 
   useEffect(() => {
     // first load: show help message
-    if (localStorage.getItem("plap_hide_help") != "true") {
+    if (localStorage.getItem("plap_show_help") === "true") {
       setShowHelp(true);
     }
 
@@ -92,19 +92,26 @@ export default function Home() {
           When everyone has voted, the results will be displayed automatically.
           If for some reason they don&apos;t, use the <i>Reveal</i> button at
           the bottom of the page.
+          <br />
+          There are some links at the bottom of the page to quickly access
+          useful resources like backlog and reference stories without searching
+          in wiki 😉
         </p>
 
         <p className="mt-2">
           The app is designed to work without refreshing the page. If you
           don&apos;t see anything move, just <b>wait</b> - the dealer is
           probably still switching tabs 🙃
+          <br />
+          Important note: the process will be stuck until everyone has voted! If
+          you don&apos;t know what to vote, press on <i>None</i>.
         </p>
 
         <Button
           label="🚀 Let's go!"
           className="mt-6"
           onClick={() => {
-            localStorage.setItem("plap_hide_help", "true");
+            localStorage.setItem("plap_show_help", "false");
             setShowHelp(false);
           }}
         />
