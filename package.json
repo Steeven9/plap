@@ -13,7 +13,7 @@
     "lint": "next lint"
   },
   "engines": {
-    "node": "^22.0.0"
+    "node": "^25"
   },
   "dependencies": {
     "next": "^15.2.3",
