@@ -1,9 +1,6 @@
-.git/
-.github/
-.husky/
-.next/
 node_modules/
-deployment/
-resources/
+.next/
+.git*
+*.md
 .env*
-Dockerfile
+Docker*

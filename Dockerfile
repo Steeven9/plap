@@ -1,29 +1,30 @@
-FROM node:25-alpine AS base
+# https://hub.docker.com/hardened-images/catalog/dhi/node
 
-FROM base AS deps
+FROM dhi.io/node:26-alpine-sfw-dev AS builder
 
 WORKDIR /app
-COPY package.json yarn.lock ./
+ENV NEXT_TELEMETRY_DISABLED=1
 
+COPY package.json yarn.lock ./
 RUN yarn --frozen-lockfile
 
+COPY . .
+RUN yarn build
 
-FROM base AS builder
+
+
+FROM dhi.io/node:26-alpine AS runner
+
+LABEL author="Soulsbros <https://soulsbros.ch>"
 
 WORKDIR /app
-
-RUN addgroup --system --gid 1001 nodejs && \
-  adduser --system --uid 1001 nextjs && \
-  mkdir .next && \
-  chown nextjs:nodejs .next
-
-COPY --from=deps --chown=nextjs:nodejs /app/node_modules ./node_modules
-COPY --chown=nextjs:nodejs . .
-
-ENV NEXT_TELEMETRY_DISABLED=1
 EXPOSE 3000
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# USER nextjs
-CMD ["yarn", "dev"]
+COPY --from=builder --chown=node /app/.next/standalone ./
+COPY --from=builder --chown=node /app/.next/static ./.next/static
+
+CMD ["node", "server.js"]
