@@ -8,23 +8,20 @@ ENV NEXT_TELEMETRY_DISABLED=1
 COPY package.json yarn.lock ./
 RUN yarn --frozen-lockfile
 
-COPY . .
-RUN yarn build
 
 
-
-FROM dhi.io/node:26-alpine AS runner
+FROM dhi.io/node:26-alpine-sfw-dev AS runner
 
 LABEL author="Soulsbros <https://soulsbros.ch>"
 
 WORKDIR /app
 EXPOSE 3000
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-COPY --from=builder --chown=node /app/.next/standalone ./
-COPY --from=builder --chown=node /app/.next/static ./.next/static
+COPY --from=builder /app/node_modules ./node_modules
+COPY . .
 
-CMD ["node", "server.js"]
+CMD ["yarn", "dev"]
