@@ -21,7 +21,7 @@ estimation... 😉
 
 ### ⚙️ Prerequisites
 
-- Node.js v22
+- Node.js
 - Yarn package manager
 
 ### 🔧 Installation

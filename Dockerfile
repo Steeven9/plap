@@ -8,6 +8,8 @@ ENV NEXT_TELEMETRY_DISABLED=1
 COPY package.json yarn.lock ./
 RUN yarn --frozen-lockfile
 
+RUN mkdir -p .next/standalone/.next/cache \
+    && chown -R node:node .next/standalone/.next/cache
 
 
 FROM dhi.io/node:26-alpine-sfw-dev AS runner
